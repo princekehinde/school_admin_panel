@@ -1,7 +1,7 @@
 {
   "name": "school_admin_panel",
   "version": "1.0.0",
-  "description": "",
+  "description": "The SchoolAdmin is a comprehensive web application built using Node.js that streamlines various administrative tasks for schools. It facilitates efficient management of student records, courses, grades, and staff information. The system aims to improve communication between teachers, students, and parents while simplifying administrative workflowsThe SchoolAdmin is a comprehensive web application built using Node.js that streamlines various administrative tasks for schools. It facilitates efficient management of student records, courses, grades, and staff information. The system aims to improve communication between teachers, students, and parents while simplifying administrative workflows",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
