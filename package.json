@@ -1,0 +1,15 @@
+{
+  "name": "school_admin_panel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "school_admin_panel"
+  },
+  "author": "prince",
+  "license": "ISC"
+}
