@@ -4,7 +4,8 @@
   "description": "The SchoolAdmin is a comprehensive web application built using Node.js that streamlines various administrative tasks for schools. It facilitates efficient management of student records, courses, grades, and staff information. The system aims to improve communication between teachers, students, and parents while simplifying administrative workflowsThe SchoolAdmin is a comprehensive web application built using Node.js that streamlines various administrative tasks for schools. It facilitates efficient management of student records, courses, grades, and staff information. The system aims to improve communication between teachers, students, and parents while simplifying administrative workflows",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -13,9 +14,12 @@
   "author": "prince",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.2",
+    "nodemon": "^3.0.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0"

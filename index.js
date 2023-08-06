@@ -1,39 +1,27 @@
 const express = require('express');
+const server = require('./src/routes/index');
+const db = require('./src/config/db');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config();
+
 const app = express();
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const jwtStrategy = require('./passport/jwtStrategy');
+const port = process.env.PORT || 4000;
 
-// MongoDB connection setup
-mongoose.connect('mongodb://localhost/schooladmin', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+// Connect to MongoDB database
+db()
+  .then(() => {
+    console.log('Database connected');
+  })
+  .catch((err) => {
+    console.log(`Database connection failed ${err}`);
+  });
+
+// Routes setup
+// app.use(server);
+
+// Server listening on the specified port
+app.listen(port, () => {
+  console.log(`Web Service Running on: ${port}`);
 });
-mongoose.connection.on('error', (error) => console.error('MongoDB connection error:', error));
-
-// Middleware setup
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-passport.use(jwtStrategy);
-
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/students', require('./routes/students'));
-app.use('/api/courses', require('./routes/courses'));
-app.use('/api/staff', require('./routes/staff'));
-app.use('/api/messages', require('./routes/messages'));
-// Add more routes for exam management and report generation here
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
-
