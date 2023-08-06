@@ -1,0 +1,24 @@
+
+# Ignore build artifacts
+/build/
+/dist/
+
+# Ignore user-specific files
+*.log
+*.cache
+*.env
+
+# Ignore sensitive data
+config/secret_key.txt
+credentials.json
+
+# Ignore IDE and editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# Ignore dependencies and virtual environments
+/node_modules/
+/env/
+/package-lock.json/
+/package.json/
