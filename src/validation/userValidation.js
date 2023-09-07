@@ -8,6 +8,7 @@ class userValidator {
         email: Joi.string().email().required(),
         username: Joi.string(),
         password: Joi.string().min(8).required(),
+        role: Joi.string().valid('teacher', 'student', 'parent').default('student').required()
       });
 
       await registerAndLoginFormSchema.validateAsync(req.body, {

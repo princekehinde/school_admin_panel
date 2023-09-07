@@ -11,6 +11,7 @@ class userService {
       email: data.email,
       username: data.username,
       id: data.id,
+      role: data.role, // Add the 'role' field to the response
     };
   };
 
@@ -18,11 +19,12 @@ class userService {
    * @param {string} username the username of the user
    * @param {string} email the email of the user
    * @param {string} password the password of the user
+   * @param {string} role the role of the user
    */
 
   static async register(data) {
     try {
-      const { email, username, password, } = data;
+      const { email, username, password, role } = data; // Add 'role' to the data
 
       const user = await User.findOne({
         $or: [
@@ -39,10 +41,11 @@ class userService {
 
       const hashPassword = await bcrypt.hashSync(password, 10);
 
-      const createUser = await UserModel.create({
+      const createUser = await User.create({
         email: email.toLowerCase(),
         username: username.toLowerCase(),
         password: hashPassword,
+        role: ['student', 'parent', 'teacher']
       });
 
       return {
@@ -54,6 +57,8 @@ class userService {
       throw new Error(error);
     }
   }
+
+
 
   // /**
   //  * @description - This method is used to login a user
