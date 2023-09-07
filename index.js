@@ -1,15 +1,12 @@
-const express = require('express');
 const server = require('./src/routes/index');
-const db = require('./src/config/db');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config
 
-// Load environment variables from .env file
-dotenv.config();
+const port = process.env.PORT || 3000;
 
-const app = express();
-const port = process.env.PORT || 4000;
 
-// Connect to MongoDB database
+require('dotenv').config();
+const db = require('./src/config/db')
+
 db()
   .then(() => {
     console.log('Database connected');
@@ -18,10 +15,9 @@ db()
     console.log(`Database connection failed ${err}`);
   });
 
-// Routes setup
-// app.use(server);
+
 
 // Server listening on the specified port
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Web Service Running on: ${port}`);
 });

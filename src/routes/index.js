@@ -1,12 +1,25 @@
 const express = require('express');
-const router = express.Router();
+const bodyParser = require('body-parser');
+const app = express();
 
-// Add your other route files here
-router.use('/api/auth', require('./auth'));
-// router.use('/api/students', require('./students'));
-// router.use('/api/courses', require('./courses'));
-// router.use('/api/staff', require('./staff'));
-// router.use('/api/messages', require('./messages'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-module.exports = router;
+
+const user = require("../routes/user");
+// const BlogPost_Router = require("../routes/blogPost");
+// const Admins_Router = require("../routes/admins");
+// const SuperAdmins_Router = require("../routes/superAdmins");
+// const comment_Router = require("../routes/comments");
+
+app.use("/user/", user);
+// app.use("/api/blog/", BlogPost_Router);
+// app.use("/api/admin/", Admins_Router);
+// app.use("/api/superAdmin/", SuperAdmins_Router);
+// app.use("/api/comment/", comment_Router);
+app.get("/home", (req, res) => {
+  res.status(200).send("welcome to the home page");
+});
+
+module.exports = app;
 
