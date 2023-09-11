@@ -3,17 +3,17 @@ const jwt = require("./../utils/jwt");
 const User = require("./../models/User");
 const EmailService = require("../utils/node-mail");
 
-class userService {
+class UserService {
   constructor() {}
 
-  static userResponse = (data) => {
+  static userResponse(data) {
     return {
       email: data.email,
       username: data.username,
       id: data.id,
       role: data.role, // Add the 'role' field to the response
     };
-  };
+  }
 
   /**
    * @param {string} username the username of the user
@@ -24,39 +24,55 @@ class userService {
 
   static async register(data) {
     try {
-      const { email, username, password, role } = data; // Add 'role' to the data
+      const { email, username, password, role } = data;
+
+      // // Ensure that email and username are valid strings
+      // if (typeof email  || typeof username ) {
+      //   return {
+      //     statusCode: 400,
+      //     message: "Email and username must be valid strings",
+      //   };
+      // }
 
       const user = await User.findOne({
         $or: [
-          { email: email.toLowerCase() },
-          { username: username.toLowerCase() },
+          { email: email },
+          { username: username },
         ],
       });
 
       if (user)
         return {
           statusCode: 400,
-          message: "User already exists",
+          message: "User with this email or username already exists",
         };
 
-      const hashPassword = await bcrypt.hashSync(password, 10);
+      const hashPassword = await bcrypt.hash(password, 10); // Use bcrypt.hash, not bcrypt.hashSync
 
       const createUser = await User.create({
-        email: email.toLowerCase(),
-        username: username.toLowerCase(),
+        email: email,
+        username: username,
         password: hashPassword,
-        role: ['student', 'parent', 'teacher']
+        role: role // Assuming 'role' is passed correctly in the 'data' object
       });
 
       return {
         statusCode: 200,
         message: "User created successfully",
-        data: await UserManager.userResponse(createUser),
+        data: await UserService.userResponse(createUser),
       };
     } catch (error) {
       throw new Error(error);
     }
   }
+
+
+
+
+
+
+
+
 
 
 
@@ -208,4 +224,4 @@ class userService {
   // }
 }
 
-module.exports = userService;
+module.exports = UserService;

@@ -6,7 +6,7 @@ class userValidator {
     try {
       const registerAndLoginFormSchema = Joi.object().keys({
         email: Joi.string().email().required(),
-        username: Joi.string(),
+        username: Joi.string().required(),
         password: Joi.string().min(8).required(),
         role: Joi.string().valid('teacher', 'student', 'parent').default('student').required()
       });
