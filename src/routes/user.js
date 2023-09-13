@@ -11,7 +11,7 @@ router.post(
   UserController.register
 );
 
-// router.post("/login", userValidator.registerAndLoginForm, UserController.login);
+router.post("/login", userValidator.registerAndLoginForm, UserController.login);
 
 // router.put(
 //   "/change-password",

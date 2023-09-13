@@ -25,15 +25,6 @@ class UserService {
   static async register(data) {
     try {
       const { email, username, password, role } = data;
-
-      // // Ensure that email and username are valid strings
-      // if (typeof email  || typeof username ) {
-      //   return {
-      //     statusCode: 400,
-      //     message: "Email and username must be valid strings",
-      //   };
-      // }
-
       const user = await User.findOne({
         $or: [
           { email: email },
@@ -66,47 +57,54 @@ class UserService {
     }
   }
 
+  static async login(data) {
+    try {
+      const { email, password } = data;
+  
+      // console.log("Attempting to find user with email:", email);
+      const user = await User.findOne({ email: email });
 
+      if (!user) {
+        console.log("User not found in the database.");
+        return {
+          statusCode: 404,
+          message: "User not found",
+        };
+      }
+      const isPasswordValid = await bcrypt.compare(password, data.password);
+  
+      if (isPasswordValid) {
+        // console.log("Invalid password.");
+        return {
+          statusCode: 401,
+          message: "Invalid password",
+        };
+      }
+  
+      const token = await jwt.generateToken(data);
+  
+      return {
+        statusCode: 200,
+        message: "Login successful",
+        data: {
+          token,
+          user: await UserService.userResponse(data),
+        },
+      };
+    } catch (error) {
+      console.error("Error in login:", error);
+  
+      // Ensure that you return a response object, even in error cases
+      return {
+       statusCode: 500,
+        message: error.message,
+      };
+    }
+  }
+  
+  
+  
 
-
-
-
-
-
-
-
-
-  // /**
-  //  * @description - This method is used to login a user
-  //  * @param {object} data - The data of the user
-  //  * @returns {object} - The response of the user
-  //  */
-  // static async login(data) {
-  //   const { email, password } = data;
-  //   const user = await UserModel.findOne({ email: email.toLowerCase() });
-  //   if (!user)
-  //     return {
-  //       statusCode: 404,
-  //       message: "User not found",
-  //     };
-
-  //   const isPasswordValid = await bcrypt.compareSync(password, user.password);
-  //   if (!isPasswordValid)
-  //     return {
-  //       statusCode: 401,
-  //       message: "Invalid password",
-  //     };
-
-  //   const token = await jwt.generateToken(user);
-  //   return {
-  //     statusCode: 200,
-  //     message: "Login successful",
-  //     data: {
-  //       token,
-  //       user: await UserManager.userResponse(user),
-  //     },
-  //   };
-  // }
 
   // /**
   //  * @description - This method is used to change the password of a user

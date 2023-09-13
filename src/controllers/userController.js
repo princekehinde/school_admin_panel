@@ -25,23 +25,23 @@ class UserController {
     }
   }
 
-//   static async login(req, res) {
-//     try {
-//       const result = await UserManager.login(req.body);
+  static async login(req, res) {
+    try {
+      const result = await userService.login(req.body);
 
-//       if (result.statusCode === 404 || result.statusCode === 400)
-//         return errorResponse(res, result.statusCode, result.message);
+      if (result.statusCode === 404 || result.statusCode === 400)
+        return errorResponse(res, result.statusCode, result.message);
 
-//       return successResponse(
-//         res,
-//         result.statusCode,
-//         result.message,
-//         result.data
-//       );
-//     } catch (error) {
-//       return errorResponse(res, 500, "Oops! Something went wrong");
-//     }
-//   }
+      return successResponse(
+        res,
+        result.statusCode,
+        result.message,
+        result.data
+      );
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
 
 //   static async changePassword(req, res) {
 //     try {
