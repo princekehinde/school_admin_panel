@@ -115,39 +115,35 @@ static async login(data) {
 }
 
 
-  
-  
-  
 
+  /**
+   * @description - This method is used to change the password of a user
+   * @param {object} data - The data of the user
+   * @returns {object} - The response of the user
+   */
+  static async changePassword(data) {
+    const { oldPassword, newPassword } = data;
+    const user = await User.findById(data.id);
 
-  // /**
-  //  * @description - This method is used to change the password of a user
-  //  * @param {object} data - The data of the user
-  //  * @returns {object} - The response of the user
-  //  */
-  // static async changePassword(data) {
-  //   const { oldPassword, newPassword } = data;
-  //   const user = await UserModel.findById(data.id);
+    // update password if old password is valid
+    const isPasswordValid = await bcrypt.compareSync(
+      oldPassword,
+      user.password
+    );
+    if (!isPasswordValid)
+      return {
+        statusCode: 401,
+        message: "Invalid password",
+      };
 
-  //   // update password if old password is valid
-  //   const isPasswordValid = await bcrypt.compareSync(
-  //     oldPassword,
-  //     user.password
-  //   );
-  //   if (!isPasswordValid)
-  //     return {
-  //       statusCode: 401,
-  //       message: "Invalid password",
-  //     };
+    const hashPassword = await bcrypt.hashSync(newPassword, 10);
+    await User.findByIdAndUpdate(data.id, { password: hashPassword });
 
-  //   const hashPassword = await bcrypt.hashSync(newPassword, 10);
-  //   await UserModel.findByIdAndUpdate(data.id, { password: hashPassword });
-
-  //   return {
-  //     statusCode: 200,
-  //     message: "Password changed successfully",
-  //   };
-  // }
+    return {
+      statusCode: 200,
+      message: "Password changed successfully",
+    };
+  }
 
   // /**
   //  * @description - This method is used to send mail for forget password

@@ -43,26 +43,26 @@ class UserController {
     }
   }
 
-//   static async changePassword(req, res) {
-//     try {
-//       const result = await UserManager.changePassword({
-//         ...req.body,
-//         id: req.user.id,
-//       });
+  static async changePassword(req, res) {
+    try {
+      const result = await userService.changePassword({
+        ...req.body,
+        id: req.user.id,
+      });
 
-//       if (result.statusCode === 400)
-//         return errorResponse(res, result.statusCode, result.message);
+      if (result.statusCode === 400)
+        return errorResponse(res, result.statusCode, result.message);
 
-//       return successResponse(
-//         res,
-//         result.statusCode,
-//         result.message,
-//         result.data
-//       );
-//     } catch (error) {
-//       return errorResponse(res, 500, "Oops! Something went wrong");
-//     }
-//   }
+      return successResponse(
+        res,
+        result.statusCode,
+        result.message,
+        result.data
+      );
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
 
 //   static async forgetPassword(req, res) {
 //     try {

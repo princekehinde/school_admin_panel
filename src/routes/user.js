@@ -13,12 +13,12 @@ router.post(
 
 router.post("/login", userValidator.registerAndLoginForm, UserController.login);
 
-// router.put(
-//   "/change-password",
-//   Middleware.isUserAuthenticated,
-//   userValidator.changePasswordForm,
-//   UserController.changePassword
-// );
+router.put(
+  "/change-password",
+  Middleware.isUserAuthenticated,
+  userValidator.changePasswordForm,
+  UserController.changePassword
+);
 
 // router.get(
 //   "/forget-password",
