@@ -56,51 +56,65 @@ class UserService {
       throw new Error(error);
     }
   }
+/**
+ * @description - This method handles user login by verifying the provided email and password.
+ * @param {object} data - The user login data containing email and password.
+ * @returns {object} - A response object with status code, message, and data (token and user information).
+ */
+static async login(data) {
+  try {
+    const { email, password } = data;
 
-  static async login(data) {
-    try {
-      const { email, password } = data;
-  
-      // console.log("Attempting to find user with email:", email);
-      const user = await User.findOne({ email: email });
+    // console.log("Attempting to find user with email:", email);
 
-      if (!user) {
-        console.log("User not found in the database.");
-        return {
-          statusCode: 404,
-          message: "User not found",
-        };
-      }
-      const isPasswordValid = await bcrypt.compare(password, data.password);
-  
-      if (isPasswordValid) {
-        // console.log("Invalid password.");
-        return {
-          statusCode: 401,
-          message: "Invalid password",
-        };
-      }
-  
-      const token = await jwt.generateToken(data);
-  
+    // Attempt to find a user with the provided email
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      console.log("User not found in the database.");
+      // If user is not found, return a 404 response
       return {
-        statusCode: 200,
-        message: "Login successful",
-        data: {
-          token,
-          user: await UserService.userResponse(data),
-        },
-      };
-    } catch (error) {
-      console.error("Error in login:", error);
-  
-      // Ensure that you return a response object, even in error cases
-      return {
-       statusCode: 500,
-        message: error.message,
+        statusCode: 404,
+        message: "User not found",
       };
     }
+
+    // Compare the provided password with the user's hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      console.log("Invalid password.");
+      // If password is invalid, return a 401 response
+      return {
+        statusCode: 401,
+        message: "Invalid password",
+      };
+    }
+
+    // Generate a token for the authenticated user
+    const token = await jwt.generateToken(user);
+
+    // Return a 200 response with the token and user data
+    return {
+      statusCode: 200,
+      message: "Login successful",
+      data: {
+        token,
+        user: await UserService.userResponse(user),
+      },
+    };
+  } catch (error) {
+    console.error("Error in login:", error);
+
+    // If any error occurs, return a 500 response with the error message
+    return {
+      statusCode: 500,
+      message: "Internal server error",
+    };
   }
+}
+
+
   
   
   

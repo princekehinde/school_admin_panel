@@ -9,7 +9,8 @@ dotenv.config();
 class JWT {
   /**
    * generate an access token for authorized user
-   * @param {Object} user - The user object
+   * @param {Object} data - The user object
+   * @param {boolean} superAdmin - Flag indicating if the user is a super admin
    * @returns {String} - The user token
    */
   static async generateToken(data, superAdmin = false) {
@@ -17,11 +18,11 @@ class JWT {
 
     if (!superAdmin) {
       payload = {
-        subject: user.id,
+        subject: data.id, // Use data.id instead of user.id
       };
     } else {
       payload = {
-        subject: user,
+        subject: data, // Use data instead of user
       };
     }
 
@@ -38,7 +39,7 @@ class JWT {
 
   /**
    * Validate userToken and see if they exist
-   * @param {String} decoded.subject - The user Id
+   * @param {String} token - The JWT token
    * @returns {User} - The userInformation token or null
    */
   static async decodeToken(token) {
