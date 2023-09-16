@@ -64,39 +64,39 @@ class UserController {
     }
   }
 
-//   static async forgetPassword(req, res) {
-//     try {
-//       const result = await UserManager.forgetPassword(req.body);
-//       if (result.statusCode === 400)
-//         return errorResponse(res, result.statusCode, result.message);
+  static async forgetPassword(req, res) {
+    try {
+      const result = await userService.forgetPassword(req.body);
+      if (result.statusCode === 400)
+        return errorResponse(res, result.statusCode, result.message);
 
-//       return successResponse(
-//         res,
-//         result.statusCode,
-//         result.message,
-//         result.data
-//       );
-//     } catch (error) {
-//       return errorResponse(res, 500, "Oops! Something went wrong");
-//     }
-//   }
+      return successResponse(
+        res,
+        result.statusCode,
+        result.message,
+        result.data
+      );
+    } catch (error) {
+      return errorResponse(res, 500, error.message)
+    }
+  }
 
-//   static async resetPassword(req, res) {
-//     try {
-//       const result = await UserManager.resetPassword(req.body);
-//       if (result.statusCode === 400)
-//         return errorResponse(res, result.statusCode, result.message);
+  static async resetPassword(req, res) {
+    try {
+      const result = await UserManager.resetPassword(req.body);
+      if (result.statusCode === 400)
+        return errorResponse(res, result.statusCode, result.message);
 
-//       return successResponse(
-//         res,
-//         result.statusCode,
-//         result.message,
-//         result.data
-//       );
-//     } catch (error) {
-//       return errorResponse(res, 500, "Oops! Something went wrong");
-//     }
-//   }
+      return successResponse(
+        res,
+        result.statusCode,
+        result.message,
+        result.data
+      );
+    } catch (error) {
+      return errorResponse(res, 500, "Oops! Something went wrong");
+    }
+  }
 }
 module.exports = UserController;
 

@@ -20,16 +20,16 @@ router.put(
   UserController.changePassword
 );
 
-// router.get(
-//   "/forget-password",
-//   userValidator.forgetPasswordForm,
-//   UserController.forgetPassword
-// );
+router.get(
+  "/forget-password",
+  userValidator.forgetPasswordForm,
+  UserController.forgetPassword
+);
 
-// router.put(
-//   "/reset-password",
-//   userValidator.resetPasswordForm,
-//   UserController.resetPassword
-// );
+router.put(
+  "/reset-password",
+  userValidator.resetPasswordForm,
+  UserController.resetPassword
+);
 
 module.exports = router;

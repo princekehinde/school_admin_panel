@@ -145,91 +145,91 @@ static async login(data) {
     };
   }
 
-  // /**
-  //  * @description - This method is used to send mail for forget password
-  //  * @param {object} data - The data of the user
-  //  * @returns {object} - The response of the user
-  //  */
-  // static async forgetPassword(data) {
-  //   console.log(data, "data");
-  //   const { email } = data;
-  //   const user = await UserModel.findOne({ email: email.toLowerCase() });
-  //   if (!user)
-  //     return {
-  //       statusCode: 404,
-  //       message: "User not found",
-  //     };
+  /**
+   * @description - This method is used to send mail for forget password
+   * @param {object} data - The data of the user
+   * @returns {object} - The response of the user
+   */
+  static async forgetPassword(data) {
+    console.log(data, "data");
+    const { email } = data;
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user)
+      return {
+        statusCode: 404,
+        message: "User not found",
+      };
 
-  //   const token = await jwt.generateToken(user);
-  //   const url = `http://localhost:3000/reset-password/${token}`;
-  //   const message = `<p>Click <a href="${url}">here</a> to reset your password</p>`;
-  //   const mailSent = await EmailService.sendMail(
-  //     email,
-  //     "Reset Password",
-  //     message
-  //   );
+    const token = await jwt.generateToken(user);
+    const url = `http://localhost:3000/reset-password/${token}`;
+    const message = `<p>Click <a href="${url}">here</a> to reset your password</p>`;
+    const mailSent = await EmailService.sendMail(
+      email,
+      "Reset Password",
+      message
+    );
 
-  //   if (!mailSent)
-  //     // update reset password token with default number
-  //     await UserModel.findOneAndUpdate(
-  //       { email },
-  //       { $set: { resetPasswordToken: "1234" } }
-  //     );
+    if (!mailSent)
+      // update reset password token with default number
+      await User.findOneAndUpdate(
+        { email },
+        { $set: { resetPasswordToken: "1234" } }
+      );
 
-  //   return {
-  //     statusCode: 200,
-  //     message: "Email sent successfully",
-  //   };
-  // }
+    return {
+      statusCode: 200,
+      message: "Email sent successfully",
+    };
+  }
 
-  // /**
-  //  * @description - This method is used to reset the password of a user
-  //  * @param {object} data - The data of the user
-  //  * @returns {object} - The response of the user
-  //  */
-  // static async resetPassword(data) {
-  //   const { email, password, token } = data;
-  //   const user = await UserModel.findOne({ email });
-  //   if (!user)
-  //     return {
-  //       statusCode: 404,
-  //       message: "User not found",
-  //     };
+  /**
+   * @description - This method is used to reset the password of a user
+   * @param {object} data - The data of the user
+   * @returns {object} - The response of the user
+   */
+  static async resetPassword(data) {
+    const { email, password, token } = data;
+    const user = await User.findOne({ email });
+    if (!user)
+      return {
+        statusCode: 404,
+        message: "User not found",
+      };
 
-  //   // if no token is in the db
-  //   if (!user.resetPasswordToken || user.resetPasswordToken === "")
-  //     return {
-  //       statusCode: 400,
-  //       message: "please initiate the reset password process",
-  //     };
+    // if no token is in the db
+    if (!user.resetPasswordToken || user.resetPasswordToken === "")
+      return {
+        statusCode: 400,
+        message: "please initiate the reset password process",
+      };
 
-  //   // if token is not equal to the token in the database
-  //   if (user.resetPasswordToken !== token) {
-  //     // increment the reset password token
-  //     user.no_of_tries = user.no_of_tries + 1;
-  //     return {
-  //       statusCode: 401,
-  //       message: "Invalid token",
-  //     };
-  //   }
+    // if token is not equal to the token in the database
+    if (user.resetPasswordToken !== token) {
+      // increment the reset password token
+      user.no_of_tries = user.no_of_tries + 1;
+      return {
+        statusCode: 401,
+        message: "Invalid token",
+      };
+    }
 
-  //   const hashPassword = await bcrypt.hashSync(password, 10);
-  //   await UserModel.findOneAndUpdate(
-  //     { resetPasswordToken: token },
-  //     {
-  //       $set: {
-  //         password: hashPassword,
-  //         resetPasswordToken: "",
-  //         no_of_tries: 0,
-  //       },
-  //     }
-  //   );
+    const hashPassword = await bcrypt.hashSync(password, 10);
+    await UserModel.findOneAndUpdate(
+      { resetPasswordToken: token },
+      {
+        $set: {
+          password: hashPassword,
+          resetPasswordToken: "",
+          no_of_tries: 0,
+        },
+      }
+    );
 
-  //   return {
-  //     statusCode: 200,
-  //     message: "Password changed successfully",
-  //   };
-  // }
+    return {
+      statusCode: 200,
+      message: "Password changed successfully",
+    };
+  }
 }
 
 module.exports = UserService;
