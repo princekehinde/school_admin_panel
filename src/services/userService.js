@@ -182,54 +182,39 @@ static async login(data) {
     };
   }
 
-  /**
-   * @description - This method is used to reset the password of a user
-   * @param {object} data - The data of the user
-   * @returns {object} - The response of the user
-   */
-  static async resetPassword(data) {
-    const { email, password, token } = data;
-    const user = await User.findOne({ email });
-    if (!user)
-      return {
-        statusCode: 404,
-        message: "User not found",
-      };
-
-    // if no token is in the db
-    if (!user.resetPasswordToken || user.resetPasswordToken === "")
-      return {
-        statusCode: 400,
-        message: "please initiate the reset password process",
-      };
-
-    // if token is not equal to the token in the database
-    if (user.resetPasswordToken !== token) {
-      // increment the reset password token
-      user.no_of_tries = user.no_of_tries + 1;
-      return {
-        statusCode: 401,
-        message: "Invalid token",
-      };
-    }
-
-    const hashPassword = await bcrypt.hashSync(password, 10);
-    await UserModel.findOneAndUpdate(
-      { resetPasswordToken: token },
-      {
-        $set: {
-          password: hashPassword,
-          resetPasswordToken: "",
-          no_of_tries: 0,
-        },
-      }
-    );
-
+/**
+ * @description - This method is used to reset the password of a user
+ * @param {object} data - The data of the user
+ * @returns {object} - The response of the user
+ */
+static async resetPassword(data) {
+  const { email, password, token } = data;
+  const user = await User.findOne({ email });
+  
+  if (!user) {
     return {
-      statusCode: 200,
-      message: "Password changed successfully",
+      statusCode: 404,
+      message: "User not found",
     };
   }
+  
+  const hashPassword = await bcrypt.hashSync(password, 10);
+  await User.findOneAndUpdate(
+    { resetPasswordToken: token },
+    {
+      $set: {
+        password: hashPassword,
+        resetPasswordToken: "",
+        no_of_tries: 0,
+      },
+    }
+  );
+
+  return {
+    statusCode: 200,
+    message: "Password changed successfully",
+  };
+}
 }
 
 module.exports = UserService;

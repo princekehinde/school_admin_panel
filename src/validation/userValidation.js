@@ -54,11 +54,11 @@ class userValidator {
   static async resetPasswordForm(req, res, next) {
     try {
       const resetPasswordFormSchema = Joi.object().keys({
-        email: Joi.string().email().required(),
-        token: Joi.string().required(),
-        password: Joi.string().min(8).required(),
+        email: Joi.string().email().required(), // Email is required
+        token: Joi.string().required(), // Token is required
+        password: Joi.string().min(8).required(), // Password is required
       });
-
+  
       await resetPasswordFormSchema.validateAsync(req.body, {
         abortEarly: false,
       });
@@ -68,4 +68,5 @@ class userValidator {
     }
   }
 }
+  
 module.exports = userValidator;

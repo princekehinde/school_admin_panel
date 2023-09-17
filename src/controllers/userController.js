@@ -83,7 +83,7 @@ class UserController {
 
   static async resetPassword(req, res) {
     try {
-      const result = await UserManager.resetPassword(req.body);
+      const result = await userService.resetPassword(req.body);
       if (result.statusCode === 400)
         return errorResponse(res, result.statusCode, result.message);
 
@@ -94,7 +94,7 @@ class UserController {
         result.data
       );
     } catch (error) {
-      return errorResponse(res, 500, "Oops! Something went wrong");
+      return errorResponse(res, 500, error.message);
     }
   }
 }
