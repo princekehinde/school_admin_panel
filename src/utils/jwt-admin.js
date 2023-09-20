@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
-const AdminService = require("../service/admin");
+const User = require("../models/User");
+const AdminService = require("../services/admin");
 
 dotenv.config();
 async function generateAdminToken(email) {

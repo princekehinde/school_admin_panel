@@ -9,7 +9,7 @@ class AdminController {
   static async login(req, res) {
     try {
       // NOTE : only login functionality for super admin is implemented
-      const result = await AdminManager.adminLogin(req.body);
+      const result = await AdminService.adminLogin(req.body);
       if (result.statusCode === 404 || result.statusCode === 400)
         return errorResponse(res, result.statusCode, result.message);
 
