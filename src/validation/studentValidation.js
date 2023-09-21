@@ -9,7 +9,9 @@ class StudentValidator {
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         dateOfBirth: Joi.date().iso().required(),
-        // Add any other fields relevant to student registration
+        email: Joi.string().required(),
+        phone: Joi.string().required(),
+        password: Joi.string().required()
       });
 
       await registerFormSchema.validateAsync(req.body, {
@@ -38,32 +40,11 @@ class StudentValidator {
     }
   }
 
-  // Add additional validation methods for student-related actions as needed
-
-  // Example:
-  static async updateProfileForm(req, res, next) {
-    try {
-      const updateProfileFormSchema = Joi.object().keys({
-        // Add validation rules for updating student profile here
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
-        dateOfBirth: Joi.date().iso().required(),
-        // Add any other fields that can be updated in the student profile
-      });
-
-      await updateProfileFormSchema.validateAsync(req.body, {
-        abortEarly: false,
-      });
-      next();
-    } catch (error) {
-      return errorResponse(res, 400, error.message);
-    }
-  }
   static async markAttendanceForm(req, res, next) {
     try {
       const markAttendanceFormSchema = Joi.object().keys({
-        courseId: Joi.string().required(), // Assuming courseId is required
-        date: Joi.date().iso().required(), // Assuming date is required
+        date: Joi.date().iso().required(), // Date of attendance (ISO format)
+        status: Joi.string().valid('present', 'absent').required(), // Attendance status
         // Add any other fields that are required for marking attendance
       });
 
@@ -79,7 +60,8 @@ class StudentValidator {
   static async enrollCourseForm(req, res, next) {
     try {
       const enrollCourseFormSchema = Joi.object().keys({
-        courseId: Joi.string().required(), // Assuming courseId is required
+        courseName: Joi.string().required(), // Name of the course
+        courseId: Joi.string().required(), // Course ID or some identifier
         // Add any other fields that are required for course enrollment
       });
 

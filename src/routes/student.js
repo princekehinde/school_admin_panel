@@ -15,39 +15,10 @@ router.post(
 // Student Login Endpoint
 router.post("/login", studentValidator.loginForm, StudentController.login);
 
-// Get Student Profile (requires authentication)
-router.get(
-  "/profile",
-  Middleware.isUserAuthenticated,
-  StudentController.getProfile
-);
-
-// Update Student Profile (requires authentication)
-router.put(
-  "/profile",
-  Middleware.isUserAuthenticated,
-  studentValidator.updateProfileForm,
-  StudentController.updateProfile
-);
-
-// Get Student Grades (requires authentication)
-router.get(
-  "/grades",
-  Middleware.isUserAuthenticated,
-  StudentController.getGrades
-);
-
-// Get Class Schedule (requires authentication)
-router.get(
-  "/class-schedule",
-  Middleware.isUserAuthenticated,
-  StudentController.getClassSchedule
-);
-
 // Mark Attendance (requires authentication)
 router.post(
-  "/mark-attendance",
-  Middleware.isUserAuthenticated,
+  "/markattendance",
+  Middleware.isStudentAuthenticated,
   studentValidator.markAttendanceForm,
   StudentController.markAttendance
 );
@@ -59,5 +30,34 @@ router.post(
   studentValidator.enrollCourseForm,
   StudentController.enrollCourse
 );
+
+// Get Student Profile (requires authentication)
+// router.get(
+//   "/profile",
+//   Middleware.isUserAuthenticated,
+//   StudentController.getProfile
+// );
+
+// // Update Student Profile (requires authentication)
+// router.put(
+//   "/profile",
+//   Middleware.isUserAuthenticated,
+//   studentValidator.updateProfileForm,
+//   StudentController.updateProfile
+// );
+
+// // Get Student Grades (requires authentication)
+// router.get(
+//   "/grades",
+//   Middleware.isUserAuthenticated,
+//   StudentController.getGrades
+// );
+
+// // Get Class Schedule (requires authentication)
+// router.get(
+//   "/class-schedule",
+//   Middleware.isUserAuthenticated,
+//   StudentController.getClassSchedule
+// );
 
 module.exports = router;
